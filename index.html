@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neil & Grace's Download Festival Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e5e5e5;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff6b35;
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(-100px);
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ff6b35);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #f7931e;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ff6b35;
+        }
+
+        .save-btn, .clear-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .save-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .clear-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ff6b35;
+            border: 2px solid #ff6b35;
+            margin-left: 10px;
+        }
+
+        .clear-btn:hover {
+            background: rgba(255, 107, 53, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .category {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ff6b35);
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .category:hover::before {
+            opacity: 0.3;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .category-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5));
+        }
+
+        .category-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #f7931e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .item.checked {
+            background: rgba(255, 107, 53, 0.2);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .checkbox {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ff6b35;
+            border-radius: 6px;
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox:checked {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border: none;
+        }
+
+        .checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .item-text {
+            font-size: 1.1em;
+            flex: 1;
+        }
+
+        .delete-btn {
+            width: 24px;
+            height: 24px;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            background: rgba(255, 0, 0, 0.05);
+            color: rgba(255, 107, 53, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            margin-left: 10px;
+            opacity: 0.3;
+        }
+
+        .item:hover .delete-btn {
+            opacity: 0.6;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: rgba(255, 0, 0, 0.5);
+            color: #ff0000;
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .add-item-container {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px dashed rgba(255, 107, 53, 0.3);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .add-item-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            color: #e5e5e5;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .add-item-input:focus {
+            border-color: #ff6b35;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+        }
+
+        .add-item-input::placeholder {
+            color: rgba(255, 107, 53, 0.5);
+        }
+
+        .add-item-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .add-item-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        body.rock-mode .delete-btn:hover {
+            animation: shake-delete 0.3s ease;
+            background: rgba(255, 0, 0, 0.5);
+        }
+
+        @keyframes shake-delete {
+            0%, 100% { transform: scale(1.1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-10deg); }
+            75% { transform: scale(1.2) rotate(10deg); }
+        }
+
+        body.rock-mode .add-item-btn {
+            animation: pulse-add 1s infinite alternate;
+        }
+
+        @keyframes pulse-add {
+            0% { transform: scale(1); box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4); }
+            100% { transform: scale(1.05); box-shadow: 0 8px 25px rgba(255, 107, 53, 0.6); }
+        }
+
+        .floating-emoji {
+            position: fixed;
+            font-size: 2em;
+            animation: float-emoji 15s infinite linear;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        @keyframes float-emoji {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .saved-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .saved-message.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Save Modal Styles */
+        #saveModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #saveModal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #ff6b35;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        #saveModal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content h3 {
+            color: #ff6b35;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .save-code-container {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        #saveCodeInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #f7931e;
+            font-family: monospace;
+            font-size: 0.9em;
+            padding: 10px;
+            outline: none;
+        }
+
+        .copy-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .modal-instructions {
+            color: #aaa;
+            font-size: 0.9em;
+            margin: 20px 0;
+        }
+
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ff6b35;
+            border: 2px solid #ff6b35;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 107, 53, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* EXTREME ROCK MODE STYLES */
+        .rock-mode-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff0000, #ff6b35, #ff0000);
+            background-size: 200% 200%;
+            color: white;
+            border: 3px solid #fff;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rock-mode-btn:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 10px 40px rgba(255, 0, 0, 0.8);
+        }
+
+        .rock-mode-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .rock-mode-btn:hover::before {
+            animation: shine 0.5s ease;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+
+        /* EXTREME ROCK MODE ACTIVE */
+        body.rock-mode {
+            animation: shake 0.5s infinite, flash 2s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            10% { transform: translate(-2px, -2px) rotate(-0.5deg); }
+            20% { transform: translate(2px, -2px) rotate(0.5deg); }
+            30% { transform: translate(-2px, 2px) rotate(-0.5deg); }
+            40% { transform: translate(2px, 2px) rotate(0.5deg); }
+            50% { transform: translate(-2px, -2px) rotate(-0.5deg); }
+            60% { transform: translate(2px, -2px) rotate(0.5deg); }
+            70% { transform: translate(-2px, 2px) rotate(-0.5deg); }
+            80% { transform: translate(2px, 2px) rotate(0.5deg); }
+            90% { transform: translate(-2px, -2px) rotate(-0.5deg); }
+        }
+
+        @keyframes flash {
+            0%, 90%, 100% { background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%); }
+            92%, 96% { background: linear-gradient(135deg, #200000 0%, #3a1a1e 50%, #361316 100%); }
+            94%, 98% { background: linear-gradient(135deg, #000000 0%, #1a0a0e 50%, #160306 100%); }
+        }
+
+        body.rock-mode h1 {
+            animation: metal-glow 0.5s infinite alternate, headbang 0.3s infinite;
+            font-size: 4em;
+        }
+
+        @keyframes metal-glow {
+            0% { text-shadow: 0 0 30px rgba(255, 0, 0, 0.8), 0 0 60px rgba(255, 0, 0, 0.5); }
+            100% { text-shadow: 0 0 50px rgba(255, 107, 53, 1), 0 0 100px rgba(255, 0, 0, 0.8); }
+        }
+
+        @keyframes headbang {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(-2deg); }
+        }
+
+        body.rock-mode .category {
+            animation: rock-pulse 1s infinite alternate;
+        }
+
+        @keyframes rock-pulse {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.02) rotate(0.5deg); }
+        }
+
+        body.rock-mode .category:hover {
+            animation: wild-hover 0.3s infinite;
+        }
+
+        @keyframes wild-hover {
+            0% { transform: translateY(-5px) rotate(-1deg) scale(1.05); }
+            50% { transform: translateY(-8px) rotate(1deg) scale(1.08); }
+            100% { transform: translateY(-5px) rotate(-1deg) scale(1.05); }
+        }
+
+        body.rock-mode .particle {
+            width: 8px;
+            height: 8px;
+            background: #ff0000;
+            animation: float 10s infinite linear, pulse-particle 0.5s infinite alternate;
+        }
+
+        @keyframes pulse-particle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        body.rock-mode .floating-emoji {
+            animation: float-emoji 8s infinite linear, spin-emoji 2s infinite linear;
+            font-size: 3em;
+            opacity: 0.8;
+        }
+
+        @keyframes spin-emoji {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        body.rock-mode .checkbox:checked {
+            animation: check-explosion 0.5s ease;
+        }
+
+        @keyframes check-explosion {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5) rotate(180deg); box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        body.rock-mode .save-btn, body.rock-mode .clear-btn {
+            animation: button-rock 1s infinite alternate;
+        }
+
+        @keyframes button-rock {
+            0% { transform: scale(1) rotate(-1deg); }
+            100% { transform: scale(1.05) rotate(1deg); }
+        }
+
+        body.rock-mode .progress-fill {
+            background: linear-gradient(90deg, #ff0000, #ff6b35, #ff0000);
+            background-size: 200% 200%;
+            animation: fire-gradient 1s infinite;
+        }
+
+        @keyframes fire-gradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        /* Lightning effect for rock mode */
+        .lightning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+        }
+
+        .lightning.flash {
+            animation: lightning-flash 0.5s ease;
+        }
+
+        @keyframes lightning-flash {
+            0%, 100% { opacity: 0; }
+            20%, 30% { opacity: 1; background: rgba(255, 255, 255, 0.9); }
+            25% { opacity: 0; }
+            35%, 40% { opacity: 0.8; background: rgba(255, 255, 255, 0.7); }
+        }
+
+        body.rock-mode .rock-mode-text {
+            animation: rock-text 0.5s infinite alternate;
+        }
+
+        @keyframes rock-text {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            body.rock-mode h1 {
+                font-size: 3em;
+            }
+            
+            .categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-info {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                padding: 25px;
+            }
+
+            .save-code-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation" id="bgAnimation"></div>
+    
+    <div class="floating-emoji" style="left: 10%; animation-delay: 0s;">🎸</div>
+    <div class="floating-emoji" style="left: 30%; animation-delay: 3s;">🏕️</div>
+    <div class="floating-emoji" style="left: 50%; animation-delay: 6s;">🤘</div>
+    <div class="floating-emoji" style="left: 70%; animation-delay: 9s;">🎵</div>
+    <div class="floating-emoji" style="left: 90%; animation-delay: 12s;">🔥</div>
+
+    <div class="container">
+        <header>
+            <h1>Neil & Grace's Download Festival Checklist</h1>
+            <p class="subtitle">Ultimate packing list for Download Festival UK 2025 🤘</p>
+            <button class="rock-mode-btn" onclick="toggleRockMode()" id="rockModeBtn">
+                <span class="rock-mode-text">🤘 EXTREME ROCK MODE 🤘</span>
+            </button>
+        </header>
+
+        <div class="progress-section">
+            <div class="progress-info">
+                <div class="progress-text">
+                    <span id="checkedCount">0</span> / <span id="totalCount">0</span> items packed
+                </div>
+                <div>
+                    <button class="save-btn" onclick="saveProgress()">💾 Save Progress</button>
+                    <button class="save-btn" style="background: linear-gradient(45deg, #f7931e, #ff6b35); margin-left: 10px;" onclick="loadFromCode()">📥 Load Progress</button>
+                    <button class="clear-btn" onclick="clearProgress()">🗑️ Clear All</button>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="categories" id="categories">
+            <!-- Categories will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <div class="saved-message" id="savedMessage">
+        Progress Saved! 🎉
+    </div>
+
+    <div class="lightning" id="lightning"></div>
+
+    <script>
+        // Initial categories data
+        const initialCategories = [
+            {
+                title: "Camping Essentials",
+                icon: "⛺",
+                items: [
+                    "Tent (test it before you go!)",
+                    "Sleeping bag (warm one - gets cold at night)",
+                    "Sleeping mat/air bed",
+                    "Pump for air bed",
+                    "Pillow/inflatable pillow",
+                    "Camping chairs (2x with cup holders)",
+                    "Gazebo for shade/rain shelter",
+                    "Tent pegs & mallet",
+                    "Guy ropes (spare ones too)",
+                    "Groundsheet/tarp",
+                    "Camping table (optional)",
+                    "Bin bags for rubbish & muddy clothes",
+                    "Cable ties/bungee cords",
+                    "Duct tape (always useful!)"
+                ]
+            },
+            {
+                title: "Cooking & Food",
+                icon: "🍳",
+                items: [
+                    "Camping stove",
+                    "Gas canisters (check compatibility)",
+                    "Lighter/matches",
+                    "Pots and pans",
+                    "Plates & bowls (2 sets)",
+                    "Cutlery (2 sets)",
+                    "Mugs/cups",
+                    "Can opener",
+                    "Bottle opener",
+                    "Sharp knife",
+                    "Chopping board",
+                    "Wooden spoons/spatula",
+                    "Kitchen roll",
+                    "Washing up liquid & sponge",
+                    "Tea towel",
+                    "Food storage containers",
+                    "Aluminum foil",
+                    "Salt, pepper & spices",
+                    "Cooking oil",
+                    "Coffee/tea bags",
+                    "Non-perishable snacks",
+                    "Energy bars",
+                    "Instant noodles/pasta",
+                    "Bread",
+                    "Water container with tap"
+                ]
+            },
+            {
+                title: "Cooler & Drinks",
+                icon: "🍺",
+                items: [
+                    "Cool box/cooler",
+                    "Ice packs (freeze on-site available)",
+                    "Reusable water bottles (2x)",
+                    "Beer/cider",
+                    "Spirits (decant into plastic bottles)",
+                    "Mixers",
+                    "Soft drinks",
+                    "Plenty of water"
+                ]
+            },
+            {
+                title: "Clothing & Footwear",
+                icon: "👕",
+                items: [
+                    "Wellies (essential!)",
+                    "Walking boots/sturdy shoes",
+                    "Comfortable trainers",
+                    "Warm jacket/hoodie",
+                    "Waterproof jacket",
+                    "Rain poncho",
+                    "T-shirts (5+ days worth)",
+                    "Shorts/jeans",
+                    "Underwear (extra pairs)",
+                    "Socks (lots - keep feet dry!)",
+                    "Warm socks for sleeping",
+                    "Pajamas/comfy clothes",
+                    "Hat/cap",
+                    "Sunglasses",
+                    "Bandana/buff"
+                ]
+            },
+            {
+                title: "Personal Care & Hygiene",
+                icon: "🧼",
+                items: [
+                    "Toothbrush & toothpaste",
+                    "Biodegradable soap/shower gel",
+                    "Shampoo (travel size)",
+                    "Deodorant",
+                    "Wet wipes (lots!)",
+                    "Toilet paper",
+                    "Hand sanitizer",
+                    "Towel (quick-dry travel towel)",
+                    "Dry shampoo",
+                    "Feminine hygiene products",
+                    "Contact lenses & solution",
+                    "Prescription medications",
+                    "Nail clippers",
+                    "Small mirror",
+                    "Hairbrush/comb",
+                    "Hair ties",
+                    "Razor"
+                ]
+            },
+            {
+                title: "Health & Safety",
+                icon: "🏥",
+                items: [
+                    "First aid kit",
+                    "Plasters (for blisters)",
+                    "Paracetamol/ibuprofen",
+                    "Antihistamines (hay fever)",
+                    "Rehydration salts",
+                    "Insect repellent",
+                    "After-bite cream",
+                    "Sun cream (high SPF)",
+                    "After sun lotion",
+                    "Blister plasters",
+                    "Face masks (dust protection)",
+                    "Earplugs (for sleeping)",
+                    "Any prescription meds"
+                ]
+            },
+            {
+                title: "Festival Essentials",
+                icon: "🎪",
+                items: [
+                    "Festival tickets!",
+                    "ID/driving license",
+                    "Cash (some vendors cash only)",
+                    "Bank cards",
+                    "Phone & charger",
+                    "Portable power bank",
+                    "Head torch",
+                    "Spare torch",
+                    "Spare batteries",
+                    "Small day bag/bum bag",
+                    "Flag & pole (to find tent)",
+                    "Marker pen (tent decoration)",
+                    "Padlock for tent",
+                    "Whistle",
+                    "Download Festival app",
+                    "Printed lineup/schedule"
+                ]
+            },
+            {
+                title: "Comfort & Extras",
+                icon: "✨",
+                items: [
+                    "Folding trolley/wagon",
+                    "Bunting/decorations",
+                    "Solar lights/LED strips",
+                    "Bluetooth speaker",
+                    "Playing cards/games",
+                    "Books/magazines",
+                    "Disposable camera",
+                    "Festival outfit accessories",
+                    "Glitter/face paint",
+                    "Fancy dress items",
+                    "Inflatable sofa",
+                    "Hammock",
+                    "Portable fan",
+                    "Hot water bottle",
+                    "Blanket for evening",
+                    "Umbrella"
+                ]
+            }
+        ];
+
+        // State variables
+        let categories = JSON.parse(JSON.stringify(initialCategories));
+        let checkedItems = {};
+        let currentSaveCode = '';
+
+        // Update progress bar
+        function updateProgress() {
+            const total = categories.reduce((sum, cat) => sum + cat.items.length, 0);
+            const checked = Object.values(checkedItems).filter(v => v).length;
+            
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('checkedCount').textContent = checked;
+            
+            const percentage = total > 0 ? (checked / total) * 100 : 0;
+            document.getElementById('progressFill').style.width = percentage + '%';
+        }
+
+        // Toggle item check
+        function toggleItem(categoryIndex, itemIndex) {
+            const key = `${categoryIndex}-${itemIndex}`;
+            checkedItems[key] = !checkedItems[key];
+            renderCategories();
+            updateProgress();
+        }
+
+        // Delete item - using same pattern as addItem which works
+        function deleteItem(categoryIndex, itemIndex) {
+            if (confirm('Remove this item from your checklist?')) {
+                // Remove the item using splice
+                categories[categoryIndex].items.splice(itemIndex, 1);
+                
+                // Update checked items - create new object with adjusted indices
+                const newCheckedItems = {};
+                for (const [key, value] of Object.entries(checkedItems)) {
+                    const [catIdx, itmIdx] = key.split('-').map(Number);
+                    
+                    if (catIdx === categoryIndex) {
+                        // Same category - adjust indices
+                        if (itmIdx < itemIndex) {
+                            // Before deleted item - keep same index
+                            newCheckedItems[key] = value;
+                        } else if (itmIdx > itemIndex) {
+                            // After deleted item - decrease index by 1
+                            newCheckedItems[`${catIdx}-${itmIdx - 1}`] = value;
+                        }
+                        // Skip deleted item (itmIdx === itemIndex)
+                    } else {
+                        // Different category - keep as is
+                        newCheckedItems[key] = value;
+                    }
+                }
+                
+                checkedItems = newCheckedItems;
+                
+                // Re-render everything - same as addItem does
+                renderCategories();
+                updateProgress();
+            }
+        }
+
+        // Add new item to category
+        function addItem(categoryIndex) {
+            const input = document.getElementById(`add-input-${categoryIndex}`);
+            const itemText = input.value.trim();
+            
+            if (itemText) {
+                categories[categoryIndex].items.push(itemText);
+                input.value = '';
+                renderCategories();
+                updateProgress();
+            }
+        }
+
+        // Handle enter key in add item input
+        function handleAddItemEnter(event, categoryIndex) {
+            if (event.key === 'Enter') {
+                addItem(categoryIndex);
+            }
+        }
+
+        // Render categories and items
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            container.innerHTML = '';
+            
+            categories.forEach((category, catIndex) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'category-header';
+                headerDiv.innerHTML = `
+                    <span class="category-icon">${category.icon}</span>
+                    <h2 class="category-title">${category.title}</h2>
+                `;
+                categoryDiv.appendChild(headerDiv);
+                
+                category.items.forEach((item, itemIndex) => {
+                    const key = `${catIndex}-${itemIndex}`;
+                    
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'item';
+                    itemDiv.setAttribute('data-key', key);
+                    
+                    if (checkedItems[key]) {
+                        itemDiv.classList.add('checked');
+                    }
+                    
+                    // Create elements separately to ensure proper event handling
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'checkbox';
+                    checkbox.checked = checkedItems[key] || false;
+                    checkbox.onclick = function(e) {
+                        e.stopPropagation();
+                        toggleItem(catIndex, itemIndex);
+                    };
+                    
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'item-text';
+                    textSpan.textContent = item;
+                    textSpan.onclick = function() {
+                        toggleItem(catIndex, itemIndex);
+                    };
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.type = 'button';
+                    deleteBtn.title = 'Remove item';
+                    deleteBtn.textContent = '×';
+                    deleteBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        deleteItem(catIndex, itemIndex);
+                    };
+                    
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(textSpan);
+                    itemDiv.appendChild(deleteBtn);
+                    
+                    categoryDiv.appendChild(itemDiv);
+                });
+                
+                // Add item input
+                const addItemDiv = document.createElement('div');
+                addItemDiv.className = 'add-item-container';
+                addItemDiv.innerHTML = `
+                    <input type="text" 
+                           class="add-item-input" 
+                           id="add-input-${catIndex}"
+                           placeholder="Add custom item..." 
+                           onkeypress="handleAddItemEnter(event, ${catIndex})">
+                    <button class="add-item-btn" onclick="addItem(${catIndex})">
+                        <span>+</span> Add
+                    </button>
+                `;
+                categoryDiv.appendChild(addItemDiv);
+                
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        // Load saved progress (no-op for in-memory storage)
+        function loadProgress() {
+            // In-memory storage only
+        }
+
+        // Save progress to shareable code
+        function saveProgress() {
+            const saveState = {
+                checked: checkedItems,
+                categories: categories
+            };
+            
+            currentSaveCode = btoa(JSON.stringify(saveState));
+            showSaveModal(currentSaveCode);
+        }
+
+        // Show save modal with copy functionality
+        function showSaveModal(code) {
+            let modal = document.getElementById('saveModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'saveModal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h3>Your Progress is Saved! 🎉</h3>
+                        <p>Copy this code to save your checklist:</p>
+                        <div class="save-code-container">
+                            <input type="text" id="saveCodeInput" readonly>
+                            <button onclick="copySaveCode()" class="copy-btn">📋 Copy</button>
+                        </div>
+                        <p class="modal-instructions">Keep this code safe! You can restore your progress anytime using the "Load Progress" button.</p>
+                        <button onclick="closeSaveModal()" class="modal-close-btn">Close</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            
+            document.getElementById('saveCodeInput').value = code;
+            modal.classList.add('show');
+        }
+
+        // Copy save code to clipboard
+        function copySaveCode() {
+            const input = document.getElementById('saveCodeInput');
+            input.select();
+            document.execCommand('copy');
+            
+            const copyBtn = document.querySelector('.copy-btn');
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '✅ Copied!';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+            }, 2000);
+        }
+
+        // Close save modal
+        function closeSaveModal() {
+            const modal = document.getElementById('saveModal');
+            modal.classList.remove('show');
+        }
+
+        // Load progress from code
+        function loadFromCode() {
+            const code = prompt('Paste your saved progress code:');
+            if (code) {
+                try {
+                    const saveState = JSON.parse(atob(code.trim()));
+                    
+                    if (saveState.categories) {
+                        categories = saveState.categories;
+                        checkedItems = saveState.checked || {};
+                    } else {
+                        checkedItems = saveState;
+                    }
+                    
+                    currentSaveCode = code.trim();
+                    renderCategories();
+                    updateProgress();
+                    
+                    const message = document.getElementById('savedMessage');
+                    message.innerHTML = 'Progress Loaded! ✨';
+                    message.classList.add('show');
+                    setTimeout(() => {
+                        message.classList.remove('show');
+                    }, 2000);
+                } catch (e) {
+                    alert('Invalid save code. Please try again.');
+                }
+            }
+        }
+
+        // Clear all progress
+        function clearProgress() {
+            if (confirm('Are you sure you want to clear all progress? This will reset everything including custom items.')) {
+                checkedItems = {};
+                currentSaveCode = '';
+                categories = JSON.parse(JSON.stringify(initialCategories));
+                renderCategories();
+                updateProgress();
+            }
+        }
+
+        // Create background particles
+        function createParticles() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                bgAnimation.appendChild(particle);
+            }
+        }
+
+        // Toggle EXTREME ROCK MODE
+        let rockModeActive = false;
+        let lightningInterval;
+        
+        function toggleRockMode() {
+            rockModeActive = !rockModeActive;
+            const body = document.body;
+            const btn = document.getElementById('rockModeBtn');
+            
+            if (rockModeActive) {
+                body.classList.add('rock-mode');
+                btn.innerHTML = '<span class="rock-mode-text">🎸 NORMAL MODE 🎸</span>';
+                
+                lightningInterval = setInterval(() => {
+                    if (Math.random() > 0.7) {
+                        triggerLightning();
+                    }
+                }, 2000);
+                
+                const bgAnimation = document.getElementById('bgAnimation');
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle rock-particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 10 + 's';
+                    particle.style.animationDuration = (5 + Math.random() * 5) + 's';
+                    bgAnimation.appendChild(particle);
+                }
+                
+                triggerLightning();
+                
+            } else {
+                body.classList.remove('rock-mode');
+                btn.innerHTML = '<span class="rock-mode-text">🤘 EXTREME ROCK MODE 🤘</span>';
+                
+                clearInterval(lightningInterval);
+                
+                const rockParticles = document.querySelectorAll('.rock-particle');
+                rockParticles.forEach(p => p.remove());
+            }
+        }
+        
+        function triggerLightning() {
+            const lightning = document.getElementById('lightning');
+            lightning.classList.add('flash');
+            setTimeout(() => {
+                lightning.classList.remove('flash');
+            }, 500);
+        }
+
+        // Initialize
+        loadProgress();
+        renderCategories();
+        updateProgress();
+        createParticles();
+    </script>
+</body>
+</html>
