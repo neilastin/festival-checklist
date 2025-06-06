@@ -663,14 +663,20 @@
         }
 
         .add-item-container {
-            margin-top: 15px;
-            padding: 15px;
+            margin-top: 20px;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
             border: 1px dashed rgba(255, 107, 53, 0.3);
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .add-item-container:hover {
+            border-color: rgba(255, 107, 53, 0.5);
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .add-item-input {
@@ -895,6 +901,11 @@
 
         #loadModal.show {
             display: flex;
+        }
+
+        /* When load modal is shown from welcome screen, increase z-index */
+        #loadModal.welcome-load {
+            z-index: 3500;
         }
 
         #loadCodeInput {
@@ -1530,256 +1541,6 @@
         let userName = '';
         let festivalName = '';
 
-        // Simple compression function
-        function compressString(str) {
-            // Simple LZ-style compression
-            const dict = {};
-            let data = str.split('');
-            let output = [];
-            let currChar;
-            let phrase = data[0];
-            let code = 256;
-            
-            for (let i = 1; i < data.length; i++) {
-                currChar = data[i];
-                if (dict[phrase + currChar] != null) {
-                    phrase += currChar;
-                } else {
-                    output.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
-                    dict[phrase + currChar] = code;
-                    code++;
-                    phrase = currChar;
-                }
-            }
-            output.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
-            
-            // Convert to more compact string
-            return output.map(code => String.fromCharCode(code)).join('');
-        }
-
-        // Simple decompression function
-        function decompressString(compressed) {
-            try {
-                const dict = {};
-                let data = compressed.split('').map(c => c.charCodeAt(0));
-                let currChar = String.fromCharCode(data[0]);
-                let oldPhrase = currChar;
-                let output = [currChar];
-                let code = 256;
-                let phrase;
-                
-                for (let i = 1; i < data.length; i++) {
-                    let currCode = data[i];
-                    if (currCode < 256) {
-                        phrase = String.fromCharCode(currCode);
-                    } else {
-                        phrase = dict[currCode] ? dict[currCode] : (oldPhrase + currChar);
-                    }
-                    output.push(phrase);
-                    currChar = phrase.charAt(0);
-                    dict[code] = oldPhrase + currChar;
-                    code++;
-                    oldPhrase = phrase;
-                }
-                
-                return output.join('');
-            } catch (e) {
-                return compressed; // Return original if decompression fails
-            }
-        }
-
-        // Get default categories for comparison
-        function getDefaultCategories() {
-            return [
-                {
-                    title: "Camping Essentials",
-                    icon: "⛺",
-                    items: [
-                        "Tent (test it before you go!)",
-                        "Sleeping bag (warm one - gets cold at night)",
-                        "Sleeping mat/air bed",
-                        "Pump for air bed",
-                        "Pillow/inflatable pillow",
-                        "Camping chairs (with cup holders)",
-                        "Gazebo for shade/rain shelter",
-                        "Tent pegs & mallet",
-                        "Guy ropes (spare ones too)",
-                        "Groundsheet/tarp",
-                        "Camping table (optional)",
-                        "Bin bags for rubbish & muddy clothes",
-                        "Cable ties/bungee cords",
-                        "Duct tape (always useful!)"
-                    ]
-                },
-                {
-                    title: "Festival Essentials",
-                    icon: "🎵",
-                    items: [
-                        "Festival tickets (print backup!)",
-                        "ID/passport/driving license",
-                        "Cash (ATMs have huge queues)",
-                        "Contactless payment card",
-                        "Phone charger & power bank",
-                        "Portable phone charger",
-                        "Waterproof phone case",
-                        "Ear plugs (for sleeping)",
-                        "Glow sticks",
-                        "Festival wristbands",
-                        "Backpack/bum bag for day use",
-                        "Water bottle (reusable)",
-                        "Snacks for queuing",
-                        "Cigarettes/vape if needed",
-                        "Lighter (spare one)",
-                        "Camera/disposable cameras",
-                        "Sharpie for signing things",
-                        "Plastic bags for wet clothes"
-                    ]
-                },
-                {
-                    title: "Clothing & Weather",
-                    icon: "👕",
-                    items: [
-                        "Festival outfits (4-5 days worth)",
-                        "Warm jumper/hoodie",
-                        "Waterproof jacket/poncho",
-                        "Comfortable walking boots",
-                        "Wellies (essential for mud!)",
-                        "Flip flops for shower block",
-                        "Warm socks (wool ones)",
-                        "Underwear (extra pairs)",
-                        "Pyjamas/sleep clothes",
-                        "Hat (sun & rain protection)",
-                        "Sunglasses",
-                        "Warm layers for evening",
-                        "Quick-dry clothes",
-                        "Spare outfit in waterproof bag"
-                    ]
-                },
-                {
-                    title: "Personal Care & Hygiene",
-                    icon: "🧼",
-                    items: [
-                        "Toilet paper (essential!)",
-                        "Wet wipes (lots of them)",
-                        "Hand sanitizer",
-                        "Toothbrush & toothpaste",
-                        "Shampoo & shower gel",
-                        "Deodorant",
-                        "Towels (quick-dry ones)",
-                        "Feminine hygiene products",
-                        "Sunscreen (high factor)",
-                        "After sun lotion/aloe vera",
-                        "Basic first aid kit",
-                        "Any prescription medications",
-                        "Painkillers (ibuprofen/paracetamol)",
-                        "Plasters",
-                        "Antiseptic wipes",
-                        "Tissues",
-                        "Makeup remover wipes",
-                        "Lip balm with SPF",
-                        "Nail clippers",
-                        "Hair ties/hair brush"
-                    ]
-                },
-                {
-                    title: "Food & Drinks",
-                    icon: "🍺",
-                    items: [
-                        "Camping stove",
-                        "Gas canisters (check compatibility)",
-                        "Lighter/matches",
-                        "Pots and pans",
-                        "Plates & bowls",
-                        "Cutlery",
-                        "Mugs/cups",
-                        "Can opener/bottle opener",
-                        "Sharp knife",
-                        "Chopping board",
-                        "Cool box/electric coolbox",
-                        "Ice packs/freezer blocks",
-                        "Water containers (large ones)",
-                        "Snacks for the journey",
-                        "Easy meals (pasta, pot noodles, etc.)",
-                        "Tea/coffee/hot chocolate",
-                        "Milk (UHT lasts longer)",
-                        "Bread & spreads",
-                        "Tinned foods",
-                        "Fresh fruit (oranges, apples)",
-                        "Cereal & breakfast items",
-                        "Beer/cider (check festival rules)",
-                        "Wine/spirits (if allowed)",
-                        "Soft drinks & mixers",
-                        "Energy drinks",
-                        "Sports drinks",
-                        "Fruit juice cartons",
-                        "Squash/cordial concentrate",
-                        "Washing up liquid & sponge",
-                        "Kitchen roll/tea towels",
-                        "Cling film/foil",
-                        "Plastic food storage containers"
-                    ]
-                },
-                {
-                    title: "Electronics & Gadgets",
-                    icon: "🔌",
-                    items: [
-                        "Phone & charger",
-                        "Power bank (high capacity)",
-                        "Portable solar charger",
-                        "Extension lead for charging",
-                        "Plug adapter if needed",
-                        "Torch/head torch",
-                        "Extra batteries",
-                        "Radio (for weather updates)",
-                        "Camera & memory cards",
-                        "Bluetooth speaker (check rules)",
-                        "Cable ties for securing things",
-                        "Waterproof bags for electronics"
-                    ]
-                },
-                {
-                    title: "Comfort & Entertainment",
-                    icon: "🎮",
-                    items: [
-                        "Playing cards/travel games",
-                        "Books/magazines",
-                        "Kindle/tablet",
-                        "Headphones",
-                        "Camping/deck chairs",
-                        "Cushions",
-                        "Blanket (waterproof backed)",
-                        "Cool box for drinks",
-                        "Thermos flask",
-                        "Picnic blanket",
-                        "Frisbee/football",
-                        "Portable table",
-                        "String lights for tent",
-                        "Camping lantern"
-                    ]
-                },
-                {
-                    title: "Safety & Security",
-                    icon: "🔒",
-                    items: [
-                        "Padlock for tent zipper",
-                        "Cable lock for valuables",
-                        "Waterproof document wallet",
-                        "Copies of important documents",
-                        "Emergency contact numbers",
-                        "Car keys (spare set)",
-                        "Home insurance details",
-                        "Vehicle breakdown cover",
-                        "Travel insurance docs",
-                        "Meeting point plan if separated",
-                        "Reflective clothing/bands",
-                        "Whistle for emergencies",
-                        "Local area map",
-                        "Emergency cash stash"
-                    ]
-                }
-            ];
-        }
-
         // Initialize the app
         function initializeApp() {
             createBackgroundParticles();
@@ -1857,6 +1618,8 @@
 
         // Show welcome load modal
         function showWelcomeLoadModal() {
+            const modal = document.getElementById('loadModal');
+            modal.classList.add('welcome-load');
             showLoadModal();
         }
 
@@ -2153,7 +1916,9 @@
 
         // Close load modal
         function closeLoadModal() {
-            document.getElementById('loadModal').classList.remove('show');
+            const modal = document.getElementById('loadModal');
+            modal.classList.remove('show');
+            modal.classList.remove('welcome-load');
         }
 
         // Clear all checked items
