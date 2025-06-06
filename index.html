@@ -110,6 +110,13 @@
             gap: 20px;
         }
 
+        .progress-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
         .progress-bar {
             width: 100%;
             height: 30px;
@@ -229,7 +236,13 @@
         .category-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
+        }
+
+        .category-info {
+            display: flex;
+            align-items: center;
         }
 
         .category-icon {
@@ -244,6 +257,323 @@
             color: #f7931e;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        .delete-category-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            background: rgba(255, 0, 0, 0.05);
+            color: rgba(255, 0, 0, 0.6);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2em;
+            font-weight: bold;
+            min-width: 32px;
+            min-height: 32px;
+        }
+
+        .delete-category-btn:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: rgba(255, 0, 0, 0.8);
+            color: #ff0000;
+            transform: scale(1.1);
+        }
+
+        .add-category-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px dashed rgba(255, 107, 53, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-category-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ff6b35);
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .add-category-section:hover {
+            border-color: rgba(255, 107, 53, 0.6);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .add-category-section:hover::before {
+            opacity: 0.3;
+        }
+
+        .add-category-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.3em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .add-category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Add Category Modal */
+        #addCategoryModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        #addCategoryModal.show {
+            display: flex;
+        }
+
+        .category-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .category-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .category-input-group label {
+            color: #f7931e;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .category-name-input, .category-emoji-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ff6b35;
+            color: #e5e5e5;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .category-name-input:focus, .category-emoji-input:focus {
+            border-color: #f7931e;
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .category-emoji-input {
+            text-align: center;
+            font-size: 2em;
+            height: 80px;
+        }
+
+        .emoji-suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .emoji-suggestion {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 10px;
+            padding: 8px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .emoji-suggestion:hover {
+            background: rgba(255, 107, 53, 0.2);
+            border-color: #ff6b35;
+            transform: scale(1.1);
+        }
+
+        /* Welcome Screen */
+        #welcomeScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        #welcomeScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 2px solid #ff6b35;
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-content::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ff6b35);
+            border-radius: 30px;
+            opacity: 0.3;
+            z-index: -1;
+            animation: gradient 3s ease infinite;
+        }
+
+        .welcome-title {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ff6b35);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.3em;
+            color: #f7931e;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .welcome-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .welcome-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            color: #e5e5e5;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .welcome-input:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .welcome-input::placeholder {
+            color: rgba(255, 107, 53, 0.6);
+        }
+
+        .welcome-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .welcome-btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 200px;
+        }
+
+        .create-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .create-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.6);
+        }
+
+        .create-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.2);
+        }
+
+        .load-welcome-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ff6b35;
+            border: 2px solid #ff6b35;
+        }
+
+        .load-welcome-btn:hover {
+            background: rgba(255, 107, 53, 0.2);
+            transform: translateY(-3px);
         }
 
         .item {
@@ -306,9 +636,9 @@
         .delete-btn {
             width: 24px;
             height: 24px;
-            border: 1px solid rgba(255, 107, 53, 0.3);
-            background: rgba(255, 0, 0, 0.05);
-            color: rgba(255, 107, 53, 0.5);
+            border: 1px solid rgba(255, 107, 53, 0.5);
+            background: rgba(255, 0, 0, 0.1);
+            color: rgba(255, 107, 53, 0.8);
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -317,11 +647,11 @@
             transition: all 0.3s ease;
             font-size: 1em;
             margin-left: 10px;
-            opacity: 0.3;
+            opacity: 0.6;
         }
 
         .item:hover .delete-btn {
-            opacity: 0.6;
+            opacity: 1;
         }
 
         .delete-btn:hover {
@@ -453,18 +783,17 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
             opacity: 0;
-            pointer-events: none;
             transition: opacity 0.3s ease;
         }
 
         #saveModal.show {
+            display: flex;
             opacity: 1;
-            pointer-events: all;
         }
 
         .modal-content {
@@ -547,6 +876,60 @@
         .modal-close-btn:hover {
             background: rgba(255, 107, 53, 0.2);
             transform: translateY(-2px);
+        }
+
+        /* Load Modal Styles */
+        #loadModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        #loadModal.show {
+            display: flex;
+        }
+
+        #loadCodeInput {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ff6b35;
+            color: #e5e5e5;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.9em;
+            margin: 20px 0;
+            outline: none;
+        }
+
+        #loadCodeInput:focus {
+            border-color: #f7931e;
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+        }
+
+        .load-btn {
+            background: linear-gradient(45deg, #f7931e, #ff6b35);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .load-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
         }
 
         /* EXTREME ROCK MODE STYLES */
@@ -755,19 +1138,75 @@
             
             .progress-info {
                 flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+
+            .progress-buttons {
+                justify-content: center;
+            }
+
+            .save-btn, .clear-btn {
+                min-width: 140px;
+                padding: 10px 20px;
+                font-size: 1em;
             }
 
             .modal-content {
                 padding: 25px;
+                margin: 20px;
             }
 
             .save-code-container {
                 flex-direction: column;
             }
+
+            .emoji-suggestions {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .welcome-content {
+                padding: 30px 25px;
+                margin: 20px;
+            }
+
+            .welcome-title {
+                font-size: 2.2em;
+            }
+
+            .welcome-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .welcome-btn {
+                min-width: auto;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">🤘 Festival Checklist 🤘</h1>
+            <p class="welcome-subtitle">Create your ultimate festival packing list!</p>
+            <div class="welcome-form">
+                <input type="text" id="userName" class="welcome-input" placeholder="Your Name (e.g., Alex)" maxlength="30">
+                <input type="text" id="festivalName" class="welcome-input" placeholder="Festival Name (e.g., Download Festival)" maxlength="50">
+            </div>
+            <div class="welcome-buttons">
+                <button id="createListBtn" class="welcome-btn create-btn" onclick="createPackingList()" disabled>
+                    ✨ Create Packing List
+                </button>
+                <button class="welcome-btn load-welcome-btn" onclick="showWelcomeLoadModal()">
+                    📥 Load Progress
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="bg-animation" id="bgAnimation"></div>
     
     <div class="floating-emoji" style="left: 10%; animation-delay: 0s;">🎸</div>
@@ -778,8 +1217,8 @@
 
     <div class="container">
         <header>
-            <h1>Neil & Grace's Download Festival Checklist</h1>
-            <p class="subtitle">Ultimate packing list for Download Festival UK 2025 🤘</p>
+            <h1 id="mainTitle">Festival Checklist</h1>
+            <p id="mainSubtitle" class="subtitle">Ultimate packing list 🤘</p>
             <button class="rock-mode-btn" onclick="toggleRockMode()" id="rockModeBtn">
                 <span class="rock-mode-text">🤘 EXTREME ROCK MODE 🤘</span>
             </button>
@@ -790,10 +1229,10 @@
                 <div class="progress-text">
                     <span id="checkedCount">0</span> / <span id="totalCount">0</span> items packed
                 </div>
-                <div>
+                <div class="progress-buttons">
                     <button class="save-btn" onclick="saveProgress()">💾 Save Progress</button>
-                    <button class="save-btn" style="background: linear-gradient(45deg, #f7931e, #ff6b35); margin-left: 10px;" onclick="loadFromCode()">📥 Load Progress</button>
-                    <button class="clear-btn" onclick="clearProgress()">🗑️ Clear All</button>
+                    <button class="save-btn" style="background: linear-gradient(45deg, #f7931e, #ff6b35);" onclick="showLoadModal()">📥 Load Progress</button>
+                    <button class="clear-btn" onclick="clearAll()">🗑️ Clear All</button>
                 </div>
             </div>
             <div class="progress-bar">
@@ -801,459 +1240,394 @@
             </div>
         </div>
 
-        <div class="categories" id="categories">
-            <!-- Categories will be inserted here by JavaScript -->
+        <div class="categories" id="categories"></div>
+
+        <div class="add-category-section" id="addCategorySection">
+            <h3 style="color: #ff6b35; margin-bottom: 15px; font-size: 1.5em;">🔥 Create Custom Category 🔥</h3>
+            <p style="color: #aaa; margin-bottom: 20px;">Add your own packing category with custom items!</p>
+            <button class="add-category-btn" onclick="showAddCategoryModal()">
+                ➕ Add New Category
+            </button>
         </div>
     </div>
 
-    <div class="saved-message" id="savedMessage">
-        Progress Saved! 🎉
-    </div>
+    <div class="saved-message" id="savedMessage">Progress Saved! 🎉</div>
 
     <div class="lightning" id="lightning"></div>
 
+    <!-- Save Modal -->
+    <div id="saveModal">
+        <div class="modal-content">
+            <h3>Your Progress is Saved! 🎉</h3>
+            <p>Copy this code to save your checklist:</p>
+            <div class="save-code-container">
+                <input type="text" id="saveCodeInput" readonly>
+                <button onclick="copySaveCode()" class="copy-btn">📋 Copy</button>
+            </div>
+            <p class="modal-instructions">Keep this code safe! You can restore your progress anytime using the "Load Progress" button.</p>
+            <button onclick="closeSaveModal()" class="modal-close-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Load Modal -->
+    <div id="loadModal">
+        <div class="modal-content">
+            <h3>Load Your Progress 📥</h3>
+            <p>Paste your save code below to restore your checklist:</p>
+            <input type="text" id="loadCodeInput" placeholder="Paste your save code here...">
+            <p class="modal-instructions">Paste the code you saved earlier to restore your checked items and custom additions.</p>
+            <div>
+                <button onclick="loadProgress()" class="load-btn">🔄 Load Progress</button>
+                <button onclick="closeLoadModal()" class="modal-close-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div id="addCategoryModal">
+        <div class="modal-content">
+            <h3>Create New Category 🎯</h3>
+            <p>Add a custom packing category with your own items!</p>
+            <div class="category-form">
+                <div class="category-input-group">
+                    <label for="categoryNameInput">Category Name:</label>
+                    <input type="text" id="categoryNameInput" class="category-name-input" placeholder="e.g., Photography Gear">
+                </div>
+                <div class="category-input-group">
+                    <label for="categoryEmojiInput">Category Emoji:</label>
+                    <input type="text" id="categoryEmojiInput" class="category-emoji-input" placeholder="📷" maxlength="2">
+                    <div class="emoji-suggestions">
+                        <div class="emoji-suggestion" onclick="selectEmoji('📷')">📷</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🎤')">🎤</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🎪')">🎪</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('💊')">💊</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🍕')">🍕</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🎨')">🎨</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🔧')">🔧</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🏃')">🏃</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('💰')">💰</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('📚')">📚</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🌟')">🌟</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('⚡')">⚡</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🎯')">🎯</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🚗')">🚗</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🏠')">🏠</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🌙')">🌙</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('☀️')">☀️</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🌧️')">🌧️</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('💍')">💍</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('👑')">👑</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🎭')">🎭</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🍰')">🍰</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🎂')">🎂</div>
+                        <div class="emoji-suggestion" onclick="selectEmoji('🏆')">🏆</div>
+                    </div>
+                </div>
+            </div>
+            <p class="modal-instructions">Choose a name and emoji for your category. You can add items once it's created!</p>
+            <div>
+                <button onclick="createCategory()" class="load-btn">✨ Create Category</button>
+                <button onclick="closeAddCategoryModal()" class="modal-close-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Initial categories data
-        const initialCategories = [
-            {
-                title: "Camping Essentials",
-                icon: "⛺",
-                items: [
-                    "Tent (test it before you go!)",
-                    "Sleeping bag (warm one - gets cold at night)",
-                    "Sleeping mat/air bed",
-                    "Pump for air bed",
-                    "Pillow/inflatable pillow",
-                    "Camping chairs (2x with cup holders)",
-                    "Gazebo for shade/rain shelter",
-                    "Tent pegs & mallet",
-                    "Guy ropes (spare ones too)",
-                    "Groundsheet/tarp",
-                    "Camping table (optional)",
-                    "Bin bags for rubbish & muddy clothes",
-                    "Cable ties/bungee cords",
-                    "Duct tape (always useful!)"
-                ]
-            },
-            {
-                title: "Cooking & Food",
-                icon: "🍳",
-                items: [
-                    "Camping stove",
-                    "Gas canisters (check compatibility)",
-                    "Lighter/matches",
-                    "Pots and pans",
-                    "Plates & bowls (2 sets)",
-                    "Cutlery (2 sets)",
-                    "Mugs/cups",
-                    "Can opener",
-                    "Bottle opener",
-                    "Sharp knife",
-                    "Chopping board",
-                    "Wooden spoons/spatula",
-                    "Kitchen roll",
-                    "Washing up liquid & sponge",
-                    "Tea towel",
-                    "Food storage containers",
-                    "Aluminum foil",
-                    "Salt, pepper & spices",
-                    "Cooking oil",
-                    "Coffee/tea bags",
-                    "Non-perishable snacks",
-                    "Energy bars",
-                    "Instant noodles/pasta",
-                    "Bread",
-                    "Water container with tap"
-                ]
-            },
-            {
-                title: "Cooler & Drinks",
-                icon: "🍺",
-                items: [
-                    "Cool box/cooler",
-                    "Ice packs (freeze on-site available)",
-                    "Reusable water bottles (2x)",
-                    "Beer/cider",
-                    "Spirits (decant into plastic bottles)",
-                    "Mixers",
-                    "Soft drinks",
-                    "Plenty of water"
-                ]
-            },
-            {
-                title: "Clothing & Footwear",
-                icon: "👕",
-                items: [
-                    "Wellies (essential!)",
-                    "Walking boots/sturdy shoes",
-                    "Comfortable trainers",
-                    "Warm jacket/hoodie",
-                    "Waterproof jacket",
-                    "Rain poncho",
-                    "T-shirts (5+ days worth)",
-                    "Shorts/jeans",
-                    "Underwear (extra pairs)",
-                    "Socks (lots - keep feet dry!)",
-                    "Warm socks for sleeping",
-                    "Pajamas/comfy clothes",
-                    "Hat/cap",
-                    "Sunglasses",
-                    "Bandana/buff"
-                ]
-            },
-            {
-                title: "Personal Care & Hygiene",
-                icon: "🧼",
-                items: [
-                    "Toothbrush & toothpaste",
-                    "Biodegradable soap/shower gel",
-                    "Shampoo (travel size)",
-                    "Deodorant",
-                    "Wet wipes (lots!)",
-                    "Toilet paper",
-                    "Hand sanitizer",
-                    "Towel (quick-dry travel towel)",
-                    "Dry shampoo",
-                    "Feminine hygiene products",
-                    "Contact lenses & solution",
-                    "Prescription medications",
-                    "Nail clippers",
-                    "Small mirror",
-                    "Hairbrush/comb",
-                    "Hair ties",
-                    "Razor"
-                ]
-            },
-            {
-                title: "Health & Safety",
-                icon: "🏥",
-                items: [
-                    "First aid kit",
-                    "Plasters (for blisters)",
-                    "Paracetamol/ibuprofen",
-                    "Antihistamines (hay fever)",
-                    "Rehydration salts",
-                    "Insect repellent",
-                    "After-bite cream",
-                    "Sun cream (high SPF)",
-                    "After sun lotion",
-                    "Blister plasters",
-                    "Face masks (dust protection)",
-                    "Earplugs (for sleeping)",
-                    "Any prescription meds"
-                ]
-            },
-            {
-                title: "Festival Essentials",
-                icon: "🎪",
-                items: [
-                    "Festival tickets!",
-                    "ID/driving license",
-                    "Cash (some vendors cash only)",
-                    "Bank cards",
-                    "Phone & charger",
-                    "Portable power bank",
-                    "Head torch",
-                    "Spare torch",
-                    "Spare batteries",
-                    "Small day bag/bum bag",
-                    "Flag & pole (to find tent)",
-                    "Marker pen (tent decoration)",
-                    "Padlock for tent",
-                    "Whistle",
-                    "Download Festival app",
-                    "Printed lineup/schedule"
-                ]
-            },
-            {
-                title: "Comfort & Extras",
-                icon: "✨",
-                items: [
-                    "Folding trolley/wagon",
-                    "Bunting/decorations",
-                    "Solar lights/LED strips",
-                    "Bluetooth speaker",
-                    "Playing cards/games",
-                    "Books/magazines",
-                    "Disposable camera",
-                    "Festival outfit accessories",
-                    "Glitter/face paint",
-                    "Fancy dress items",
-                    "Inflatable sofa",
-                    "Hammock",
-                    "Portable fan",
-                    "Hot water bottle",
-                    "Blanket for evening",
-                    "Umbrella"
-                ]
-            }
-        ];
-
-        // State variables
-        let categories = JSON.parse(JSON.stringify(initialCategories));
-        let checkedItems = {};
-        let currentSaveCode = '';
-
-        // Update progress bar
-        function updateProgress() {
-            const total = categories.reduce((sum, cat) => sum + cat.items.length, 0);
-            const checked = Object.values(checkedItems).filter(v => v).length;
-            
-            document.getElementById('totalCount').textContent = total;
-            document.getElementById('checkedCount').textContent = checked;
-            
-            const percentage = total > 0 ? (checked / total) * 100 : 0;
-            document.getElementById('progressFill').style.width = percentage + '%';
-        }
-
-        // Toggle item check
-        function toggleItem(categoryIndex, itemIndex) {
-            const key = `${categoryIndex}-${itemIndex}`;
-            checkedItems[key] = !checkedItems[key];
-            renderCategories();
-            updateProgress();
-        }
-
-        // Delete item - using same pattern as addItem which works
-        function deleteItem(categoryIndex, itemIndex) {
-            if (confirm('Remove this item from your checklist?')) {
-                // Remove the item using splice
-                categories[categoryIndex].items.splice(itemIndex, 1);
-                
-                // Update checked items - create new object with adjusted indices
-                const newCheckedItems = {};
-                for (const [key, value] of Object.entries(checkedItems)) {
-                    const [catIdx, itmIdx] = key.split('-').map(Number);
-                    
-                    if (catIdx === categoryIndex) {
-                        // Same category - adjust indices
-                        if (itmIdx < itemIndex) {
-                            // Before deleted item - keep same index
-                            newCheckedItems[key] = value;
-                        } else if (itmIdx > itemIndex) {
-                            // After deleted item - decrease index by 1
-                            newCheckedItems[`${catIdx}-${itmIdx - 1}`] = value;
-                        }
-                        // Skip deleted item (itmIdx === itemIndex)
-                    } else {
-                        // Different category - keep as is
-                        newCheckedItems[key] = value;
-                    }
+        // Global state
+        let checklistData = {
+            categories: [
+                {
+                    title: "Camping Essentials",
+                    icon: "⛺",
+                    items: [
+                        "Tent (test it before you go!)",
+                        "Sleeping bag (warm one - gets cold at night)",
+                        "Sleeping mat/air bed",
+                        "Pump for air bed",
+                        "Pillow/inflatable pillow",
+                        "Camping chairs (with cup holders)",
+                        "Gazebo for shade/rain shelter",
+                        "Tent pegs & mallet",
+                        "Guy ropes (spare ones too)",
+                        "Groundsheet/tarp",
+                        "Camping table (optional)",
+                        "Bin bags for rubbish & muddy clothes",
+                        "Cable ties/bungee cords",
+                        "Duct tape (always useful!)"
+                    ]
+                },
+                {
+                    title: "Festival Essentials",
+                    icon: "🎵",
+                    items: [
+                        "Festival tickets (print backup!)",
+                        "ID/passport/driving license",
+                        "Cash (ATMs have huge queues)",
+                        "Contactless payment card",
+                        "Phone charger & power bank",
+                        "Portable phone charger",
+                        "Waterproof phone case",
+                        "Ear plugs (for sleeping)",
+                        "Glow sticks",
+                        "Festival wristbands",
+                        "Backpack/bum bag for day use",
+                        "Water bottle (reusable)",
+                        "Snacks for queuing",
+                        "Cigarettes/vape if needed",
+                        "Lighter (spare one)",
+                        "Camera/disposable cameras",
+                        "Sharpie for signing things",
+                        "Plastic bags for wet clothes"
+                    ]
+                },
+                {
+                    title: "Clothing & Weather",
+                    icon: "👕",
+                    items: [
+                        "Festival outfits (4-5 days worth)",
+                        "Warm jumper/hoodie",
+                        "Waterproof jacket/poncho",
+                        "Comfortable walking boots",
+                        "Wellies (essential for mud!)",
+                        "Flip flops for shower block",
+                        "Warm socks (wool ones)",
+                        "Underwear (extra pairs)",
+                        "Pyjamas/sleep clothes",
+                        "Hat (sun & rain protection)",
+                        "Sunglasses",
+                        "Warm layers for evening",
+                        "Quick-dry clothes",
+                        "Spare outfit in waterproof bag"
+                    ]
+                },
+                {
+                    title: "Personal Care & Hygiene",
+                    icon: "🧼",
+                    items: [
+                        "Toilet paper (essential!)",
+                        "Wet wipes (lots of them)",
+                        "Hand sanitizer",
+                        "Toothbrush & toothpaste",
+                        "Shampoo & shower gel",
+                        "Deodorant",
+                        "Towels (quick-dry ones)",
+                        "Feminine hygiene products",
+                        "Sunscreen (high factor)",
+                        "After sun lotion/aloe vera",
+                        "Basic first aid kit",
+                        "Any prescription medications",
+                        "Painkillers (ibuprofen/paracetamol)",
+                        "Plasters",
+                        "Antiseptic wipes",
+                        "Tissues",
+                        "Makeup remover wipes",
+                        "Lip balm with SPF",
+                        "Nail clippers",
+                        "Hair ties/hair brush"
+                    ]
+                },
+                {
+                    title: "Food & Drinks",
+                    icon: "🍺",
+                    items: [
+                        "Camping stove",
+                        "Gas canisters (check compatibility)",
+                        "Lighter/matches",
+                        "Pots and pans",
+                        "Plates & bowls",
+                        "Cutlery",
+                        "Mugs/cups",
+                        "Can opener/bottle opener",
+                        "Sharp knife",
+                        "Chopping board",
+                        "Cool box/electric coolbox",
+                        "Ice packs/freezer blocks",
+                        "Water containers (large ones)",
+                        "Snacks for the journey",
+                        "Easy meals (pasta, pot noodles, etc.)",
+                        "Tea/coffee/hot chocolate",
+                        "Milk (UHT lasts longer)",
+                        "Bread & spreads",
+                        "Tinned foods",
+                        "Fresh fruit (oranges, apples)",
+                        "Cereal & breakfast items",
+                        "Beer/cider (check festival rules)",
+                        "Wine/spirits (if allowed)",
+                        "Soft drinks & mixers",
+                        "Energy drinks",
+                        "Sports drinks",
+                        "Fruit juice cartons",
+                        "Squash/cordial concentrate",
+                        "Washing up liquid & sponge",
+                        "Kitchen roll/tea towels",
+                        "Cling film/foil",
+                        "Plastic food storage containers"
+                    ]
+                },
+                {
+                    title: "Electronics & Gadgets",
+                    icon: "🔌",
+                    items: [
+                        "Phone & charger",
+                        "Power bank (high capacity)",
+                        "Portable solar charger",
+                        "Extension lead for charging",
+                        "Plug adapter if needed",
+                        "Torch/head torch",
+                        "Extra batteries",
+                        "Radio (for weather updates)",
+                        "Camera & memory cards",
+                        "Bluetooth speaker (check rules)",
+                        "Cable ties for securing things",
+                        "Waterproof bags for electronics"
+                    ]
+                },
+                {
+                    title: "Comfort & Entertainment",
+                    icon: "🎮",
+                    items: [
+                        "Playing cards/travel games",
+                        "Books/magazines",
+                        "Kindle/tablet",
+                        "Headphones",
+                        "Camping/deck chairs",
+                        "Cushions",
+                        "Blanket (waterproof backed)",
+                        "Cool box for drinks",
+                        "Thermos flask",
+                        "Picnic blanket",
+                        "Frisbee/football",
+                        "Portable table",
+                        "String lights for tent",
+                        "Camping lantern"
+                    ]
+                },
+                {
+                    title: "Safety & Security",
+                    icon: "🔒",
+                    items: [
+                        "Padlock for tent zipper",
+                        "Cable lock for valuables",
+                        "Waterproof document wallet",
+                        "Copies of important documents",
+                        "Emergency contact numbers",
+                        "Car keys (spare set)",
+                        "Home insurance details",
+                        "Vehicle breakdown cover",
+                        "Travel insurance docs",
+                        "Meeting point plan if separated",
+                        "Reflective clothing/bands",
+                        "Whistle for emergencies",
+                        "Local area map",
+                        "Emergency cash stash"
+                    ]
                 }
-                
-                checkedItems = newCheckedItems;
-                
-                // Re-render everything - same as addItem does
-                renderCategories();
-                updateProgress();
-            }
-        }
+            ]
+        };
 
-        // Add new item to category
-        function addItem(categoryIndex) {
-            const input = document.getElementById(`add-input-${categoryIndex}`);
-            const itemText = input.value.trim();
+        let checkedItems = new Set();
+        let isRockMode = false;
+        let userName = '';
+        let festivalName = '';
+
+        // Initialize the app
+        function initializeApp() {
+            createBackgroundParticles();
+            setupWelcomeScreen();
             
-            if (itemText) {
-                categories[categoryIndex].items.push(itemText);
-                input.value = '';
-                renderCategories();
-                updateProgress();
-            }
-        }
-
-        // Handle enter key in add item input
-        function handleAddItemEnter(event, categoryIndex) {
-            if (event.key === 'Enter') {
-                addItem(categoryIndex);
-            }
-        }
-
-        // Render categories and items
-        function renderCategories() {
-            const container = document.getElementById('categories');
-            container.innerHTML = '';
-            
-            categories.forEach((category, catIndex) => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'category';
-                
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'category-header';
-                headerDiv.innerHTML = `
-                    <span class="category-icon">${category.icon}</span>
-                    <h2 class="category-title">${category.title}</h2>
-                `;
-                categoryDiv.appendChild(headerDiv);
-                
-                category.items.forEach((item, itemIndex) => {
-                    const key = `${catIndex}-${itemIndex}`;
-                    
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'item';
-                    itemDiv.setAttribute('data-key', key);
-                    
-                    if (checkedItems[key]) {
-                        itemDiv.classList.add('checked');
+            // Check if we have saved user data
+            const savedUserData = localStorage.getItem('festivalUserData');
+            if (savedUserData) {
+                try {
+                    const userData = JSON.parse(savedUserData);
+                    if (userData.userName && userData.festivalName) {
+                        userName = userData.userName;
+                        festivalName = userData.festivalName;
+                        updateHeaderText();
+                        hideWelcomeScreen();
+                        renderCategories();
+                        updateProgress();
+                        loadFromLocalStorage();
+                        return;
                     }
-                    
-                    // Create elements separately to ensure proper event handling
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.className = 'checkbox';
-                    checkbox.checked = checkedItems[key] || false;
-                    checkbox.onclick = function(e) {
-                        e.stopPropagation();
-                        toggleItem(catIndex, itemIndex);
-                    };
-                    
-                    const textSpan = document.createElement('span');
-                    textSpan.className = 'item-text';
-                    textSpan.textContent = item;
-                    textSpan.onclick = function() {
-                        toggleItem(catIndex, itemIndex);
-                    };
-                    
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'delete-btn';
-                    deleteBtn.type = 'button';
-                    deleteBtn.title = 'Remove item';
-                    deleteBtn.textContent = '×';
-                    deleteBtn.onclick = function(e) {
-                        e.stopPropagation();
-                        deleteItem(catIndex, itemIndex);
-                    };
-                    
-                    itemDiv.appendChild(checkbox);
-                    itemDiv.appendChild(textSpan);
-                    itemDiv.appendChild(deleteBtn);
-                    
-                    categoryDiv.appendChild(itemDiv);
+                } catch (error) {
+                    console.log('Error loading user data:', error);
+                }
+            }
+            
+            // Show welcome screen if no saved data
+            showWelcomeScreen();
+        }
+
+        // Setup welcome screen functionality
+        function setupWelcomeScreen() {
+            const userNameInput = document.getElementById('userName');
+            const festivalNameInput = document.getElementById('festivalName');
+            const createBtn = document.getElementById('createListBtn');
+
+            function validateInputs() {
+                const hasUserName = userNameInput.value.trim().length > 0;
+                const hasFestivalName = festivalNameInput.value.trim().length > 0;
+                createBtn.disabled = !(hasUserName && hasFestivalName);
+            }
+
+            userNameInput.addEventListener('input', validateInputs);
+            festivalNameInput.addEventListener('input', validateInputs);
+            
+            // Allow Enter key to create list when inputs are valid
+            [userNameInput, festivalNameInput].forEach(input => {
+                input.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter' && !createBtn.disabled) {
+                        createPackingList();
+                    }
                 });
-                
-                // Add item input
-                const addItemDiv = document.createElement('div');
-                addItemDiv.className = 'add-item-container';
-                addItemDiv.innerHTML = `
-                    <input type="text" 
-                           class="add-item-input" 
-                           id="add-input-${catIndex}"
-                           placeholder="Add custom item..." 
-                           onkeypress="handleAddItemEnter(event, ${catIndex})">
-                    <button class="add-item-btn" onclick="addItem(${catIndex})">
-                        <span>+</span> Add
-                    </button>
-                `;
-                categoryDiv.appendChild(addItemDiv);
-                
-                container.appendChild(categoryDiv);
             });
         }
 
-        // Load saved progress (no-op for in-memory storage)
-        function loadProgress() {
-            // In-memory storage only
-        }
-
-        // Save progress to shareable code
-        function saveProgress() {
-            const saveState = {
-                checked: checkedItems,
-                categories: categories
-            };
+        // Create packing list from welcome screen
+        function createPackingList() {
+            userName = document.getElementById('userName').value.trim();
+            festivalName = document.getElementById('festivalName').value.trim();
             
-            currentSaveCode = btoa(JSON.stringify(saveState));
-            showSaveModal(currentSaveCode);
-        }
-
-        // Show save modal with copy functionality
-        function showSaveModal(code) {
-            let modal = document.getElementById('saveModal');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'saveModal';
-                modal.innerHTML = `
-                    <div class="modal-content">
-                        <h3>Your Progress is Saved! 🎉</h3>
-                        <p>Copy this code to save your checklist:</p>
-                        <div class="save-code-container">
-                            <input type="text" id="saveCodeInput" readonly>
-                            <button onclick="copySaveCode()" class="copy-btn">📋 Copy</button>
-                        </div>
-                        <p class="modal-instructions">Keep this code safe! You can restore your progress anytime using the "Load Progress" button.</p>
-                        <button onclick="closeSaveModal()" class="modal-close-btn">Close</button>
-                    </div>
-                `;
-                document.body.appendChild(modal);
+            if (!userName || !festivalName) {
+                alert('Please enter both your name and festival name!');
+                return;
             }
+
+            // Save user data
+            const userData = { userName, festivalName };
+            localStorage.setItem('festivalUserData', JSON.stringify(userData));
             
-            document.getElementById('saveCodeInput').value = code;
-            modal.classList.add('show');
+            updateHeaderText();
+            hideWelcomeScreen();
+            renderCategories();
+            updateProgress();
+            loadFromLocalStorage();
         }
 
-        // Copy save code to clipboard
-        function copySaveCode() {
-            const input = document.getElementById('saveCodeInput');
-            input.select();
-            document.execCommand('copy');
-            
-            const copyBtn = document.querySelector('.copy-btn');
-            const originalText = copyBtn.innerHTML;
-            copyBtn.innerHTML = '✅ Copied!';
-            setTimeout(() => {
-                copyBtn.innerHTML = originalText;
-            }, 2000);
+        // Show welcome load modal
+        function showWelcomeLoadModal() {
+            showLoadModal();
         }
 
-        // Close save modal
-        function closeSaveModal() {
-            const modal = document.getElementById('saveModal');
-            modal.classList.remove('show');
+        // Update header text with user data
+        function updateHeaderText() {
+            document.getElementById('mainTitle').textContent = `${userName}'s ${festivalName} Checklist`;
+            document.getElementById('mainSubtitle').textContent = `Ultimate packing list for ${festivalName} 🤘`;
         }
 
-        // Load progress from code
-        function loadFromCode() {
-            const code = prompt('Paste your saved progress code:');
-            if (code) {
-                try {
-                    const saveState = JSON.parse(atob(code.trim()));
-                    
-                    if (saveState.categories) {
-                        categories = saveState.categories;
-                        checkedItems = saveState.checked || {};
-                    } else {
-                        checkedItems = saveState;
-                    }
-                    
-                    currentSaveCode = code.trim();
-                    renderCategories();
-                    updateProgress();
-                    
-                    const message = document.getElementById('savedMessage');
-                    message.innerHTML = 'Progress Loaded! ✨';
-                    message.classList.add('show');
-                    setTimeout(() => {
-                        message.classList.remove('show');
-                    }, 2000);
-                } catch (e) {
-                    alert('Invalid save code. Please try again.');
-                }
-            }
+        // Show welcome screen
+        function showWelcomeScreen() {
+            document.getElementById('welcomeScreen').classList.remove('hidden');
         }
 
-        // Clear all progress
-        function clearProgress() {
-            if (confirm('Are you sure you want to clear all progress? This will reset everything including custom items.')) {
-                checkedItems = {};
-                currentSaveCode = '';
-                categories = JSON.parse(JSON.stringify(initialCategories));
-                renderCategories();
-                updateProgress();
-            }
+        // Hide welcome screen
+        function hideWelcomeScreen() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
         }
 
-        // Create background particles
-        function createParticles() {
+        // Create floating background particles
+        function createBackgroundParticles() {
             const bgAnimation = document.getElementById('bgAnimation');
             for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
@@ -1265,48 +1639,293 @@
             }
         }
 
-        // Toggle EXTREME ROCK MODE
-        let rockModeActive = false;
-        let lightningInterval;
-        
-        function toggleRockMode() {
-            rockModeActive = !rockModeActive;
-            const body = document.body;
-            const btn = document.getElementById('rockModeBtn');
+        // Render all categories
+        function renderCategories() {
+            const categoriesContainer = document.getElementById('categories');
+            categoriesContainer.innerHTML = '';
+
+            checklistData.categories.forEach((category, categoryIndex) => {
+                const categoryElement = createCategoryElement(category, categoryIndex);
+                categoriesContainer.appendChild(categoryElement);
+            });
+        }
+
+        // Create a single category element
+        function createCategoryElement(category, categoryIndex) {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'category';
             
-            if (rockModeActive) {
-                body.classList.add('rock-mode');
-                btn.innerHTML = '<span class="rock-mode-text">🎸 NORMAL MODE 🎸</span>';
-                
-                lightningInterval = setInterval(() => {
-                    if (Math.random() > 0.7) {
-                        triggerLightning();
-                    }
-                }, 2000);
-                
-                const bgAnimation = document.getElementById('bgAnimation');
-                for (let i = 0; i < 30; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle rock-particle';
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.animationDelay = Math.random() * 10 + 's';
-                    particle.style.animationDuration = (5 + Math.random() * 5) + 's';
-                    bgAnimation.appendChild(particle);
-                }
-                
-                triggerLightning();
-                
+            categoryDiv.innerHTML = `
+                <div class="category-header">
+                    <div class="category-info">
+                        <div class="category-icon">${category.icon}</div>
+                        <div class="category-title">${category.title}</div>
+                    </div>
+                    <button class="delete-category-btn" onclick="deleteCategory(${categoryIndex})" title="Delete entire category">×</button>
+                </div>
+                <div class="items-container">
+                    ${category.items.map((item, itemIndex) => createItemHTML(item, categoryIndex, itemIndex)).join('')}
+                </div>
+                <div class="add-item-container">
+                    <input type="text" class="add-item-input" placeholder="Add custom item..." 
+                           onkeypress="handleAddItemKeypress(event, ${categoryIndex})">
+                    <button class="add-item-btn" onclick="addCustomItem(${categoryIndex})">
+                        ➕ Add
+                    </button>
+                </div>
+            `;
+
+            return categoryDiv;
+        }
+
+        // Create HTML for a single item
+        function createItemHTML(item, categoryIndex, itemIndex) {
+            const itemId = `item-${categoryIndex}-${itemIndex}`;
+            const isChecked = checkedItems.has(itemId);
+            
+            return `
+                <div class="item ${isChecked ? 'checked' : ''}" onclick="toggleItem('${itemId}')">
+                    <input type="checkbox" class="checkbox" ${isChecked ? 'checked' : ''} 
+                           onchange="toggleItem('${itemId}')" onclick="event.stopPropagation()">
+                    <span class="item-text">${item}</span>
+                    <button class="delete-btn" onclick="deleteItem(event, ${categoryIndex}, ${itemIndex})" title="Delete item">×</button>
+                </div>
+            `;
+        }
+
+        // Toggle item checked state
+        function toggleItem(itemId) {
+            if (checkedItems.has(itemId)) {
+                checkedItems.delete(itemId);
             } else {
-                body.classList.remove('rock-mode');
-                btn.innerHTML = '<span class="rock-mode-text">🤘 EXTREME ROCK MODE 🤘</span>';
-                
-                clearInterval(lightningInterval);
-                
-                const rockParticles = document.querySelectorAll('.rock-particle');
-                rockParticles.forEach(p => p.remove());
+                checkedItems.add(itemId);
+                if (isRockMode) {
+                    triggerLightning();
+                }
+            }
+            updateProgress();
+            saveToLocalStorage();
+            renderCategories();
+        }
+
+        // Delete an item
+        function deleteItem(event, categoryIndex, itemIndex) {
+            event.stopPropagation();
+            
+            // Remove from checked items if it was checked
+            const itemId = `item-${categoryIndex}-${itemIndex}`;
+            checkedItems.delete(itemId);
+            
+            // Remove from category
+            checklistData.categories[categoryIndex].items.splice(itemIndex, 1);
+            
+            // Re-render and update progress
+            renderCategories();
+            updateProgress();
+            saveToLocalStorage();
+        }
+
+        // Add custom item
+        function addCustomItem(categoryIndex) {
+            const input = document.querySelector(`input[onkeypress*="${categoryIndex}"]`);
+            const itemText = input.value.trim();
+            
+            if (itemText) {
+                checklistData.categories[categoryIndex].items.push(itemText);
+                input.value = '';
+                renderCategories();
+                updateProgress();
+                saveToLocalStorage();
             }
         }
-        
+
+        // Handle enter key press in add item input
+        function handleAddItemKeypress(event, categoryIndex) {
+            if (event.key === 'Enter') {
+                addCustomItem(categoryIndex);
+            }
+        }
+
+        // Update progress bar and counters
+        function updateProgress() {
+            const totalItems = checklistData.categories.reduce((sum, category) => sum + category.items.length, 0);
+            const checkedCount = checkedItems.size;
+            const percentage = totalItems > 0 ? (checkedCount / totalItems) * 100 : 0;
+
+            document.getElementById('checkedCount').textContent = checkedCount;
+            document.getElementById('totalCount').textContent = totalItems;
+            document.getElementById('progressFill').style.width = percentage + '%';
+        }
+
+        // Save progress to get shareable code
+        function saveProgress() {
+            if (!userName || !festivalName) {
+                alert('Please create a packing list first by entering your name and festival!');
+                return;
+            }
+
+            const saveData = {
+                checkedItems: Array.from(checkedItems),
+                categories: checklistData.categories,
+                userName: userName,
+                festivalName: festivalName
+            };
+            
+            const saveCode = btoa(JSON.stringify(saveData));
+            document.getElementById('saveCodeInput').value = saveCode;
+            document.getElementById('saveModal').classList.add('show');
+        }
+
+        // Copy save code to clipboard
+        function copySaveCode() {
+            const input = document.getElementById('saveCodeInput');
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile devices
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showSavedMessage('Code copied to clipboard! 📋');
+                } else {
+                    // Fallback for modern browsers
+                    navigator.clipboard.writeText(input.value).then(() => {
+                        showSavedMessage('Code copied to clipboard! 📋');
+                    }).catch(() => {
+                        showSavedMessage('Please manually copy the code');
+                    });
+                }
+            } catch (err) {
+                // Fallback for modern browsers
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(input.value).then(() => {
+                        showSavedMessage('Code copied to clipboard! 📋');
+                    }).catch(() => {
+                        showSavedMessage('Please manually copy the code');
+                    });
+                } else {
+                    showSavedMessage('Please manually copy the code');
+                }
+            }
+        }
+
+        // Show load modal
+        function showLoadModal() {
+            document.getElementById('loadCodeInput').value = '';
+            document.getElementById('loadModal').classList.add('show');
+        }
+
+        // Load progress from code
+        function loadProgress() {
+            const code = document.getElementById('loadCodeInput').value.trim();
+            
+            if (!code) {
+                alert('Please enter a save code!');
+                return;
+            }
+
+            try {
+                const saveData = JSON.parse(atob(code));
+                
+                if (saveData.checkedItems && saveData.categories) {
+                    checkedItems = new Set(saveData.checkedItems);
+                    checklistData.categories = saveData.categories;
+                    
+                    // Load user data if available
+                    if (saveData.userName && saveData.festivalName) {
+                        userName = saveData.userName;
+                        festivalName = saveData.festivalName;
+                        
+                        // Save user data to localStorage
+                        const userData = { userName, festivalName };
+                        localStorage.setItem('festivalUserData', JSON.stringify(userData));
+                        
+                        updateHeaderText();
+                        hideWelcomeScreen();
+                    }
+                    
+                    renderCategories();
+                    updateProgress();
+                    saveToLocalStorage();
+                    closeLoadModal();
+                    showSavedMessage('Progress Loaded! 🎉');
+                } else {
+                    throw new Error('Invalid save data format');
+                }
+            } catch (error) {
+                alert('Invalid save code! Please check the code and try again.');
+            }
+        }
+
+        // Close save modal
+        function closeSaveModal() {
+            document.getElementById('saveModal').classList.remove('show');
+        }
+
+        // Close load modal
+        function closeLoadModal() {
+            document.getElementById('loadModal').classList.remove('show');
+        }
+
+        // Clear all checked items
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all checked items?')) {
+                checkedItems.clear();
+                renderCategories();
+                updateProgress();
+                saveToLocalStorage();
+                showSavedMessage('All items cleared! 🗑️');
+            }
+        }
+
+        // Show saved message
+        function showSavedMessage(message = 'Progress Saved! 🎉') {
+            const savedMessage = document.getElementById('savedMessage');
+            savedMessage.textContent = message;
+            savedMessage.classList.add('show');
+            
+            setTimeout(() => {
+                savedMessage.classList.remove('show');
+            }, 2000);
+        }
+
+        // Toggle extreme rock mode
+        function toggleRockMode() {
+            isRockMode = !isRockMode;
+            document.body.classList.toggle('rock-mode', isRockMode);
+            
+            const btn = document.getElementById('rockModeBtn');
+            if (isRockMode) {
+                btn.innerHTML = '<span class="rock-mode-text">🔥 DISABLE ROCK MODE 🔥</span>';
+                triggerLightning();
+                // Add extra floating emojis
+                addRockModeEmojis();
+            } else {
+                btn.innerHTML = '<span class="rock-mode-text">🤘 EXTREME ROCK MODE 🤘</span>';
+                removeRockModeEmojis();
+            }
+        }
+
+        // Add extra emojis for rock mode
+        function addRockModeEmojis() {
+            const emojis = ['🔥', '⚡', '💀', '🎸', '🤘', '🎵', '💥'];
+            for (let i = 0; i < 10; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji rock-mode-emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.animationDelay = Math.random() * 5 + 's';
+                emoji.style.fontSize = (2 + Math.random() * 2) + 'em';
+                document.body.appendChild(emoji);
+            }
+        }
+
+        // Remove rock mode emojis
+        function removeRockModeEmojis() {
+            const rockEmojis = document.querySelectorAll('.rock-mode-emoji');
+            rockEmojis.forEach(emoji => emoji.remove());
+        }
+
+        // Trigger lightning effect
         function triggerLightning() {
             const lightning = document.getElementById('lightning');
             lightning.classList.add('flash');
@@ -1315,11 +1934,167 @@
             }, 500);
         }
 
-        // Initialize
-        loadProgress();
-        renderCategories();
-        updateProgress();
-        createParticles();
+        // Save to browser localStorage
+        function saveToLocalStorage() {
+            const saveData = {
+                checkedItems: Array.from(checkedItems),
+                categories: checklistData.categories
+            };
+            localStorage.setItem('downloadFestivalChecklist', JSON.stringify(saveData));
+            
+            // Also save user data separately
+            if (userName && festivalName) {
+                const userData = { userName, festivalName };
+                localStorage.setItem('festivalUserData', JSON.stringify(userData));
+            }
+        }
+
+        // Load from browser localStorage
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('downloadFestivalChecklist');
+            if (saved) {
+                try {
+                    const saveData = JSON.parse(saved);
+                    if (saveData.checkedItems) {
+                        checkedItems = new Set(saveData.checkedItems);
+                    }
+                    if (saveData.categories) {
+                        checklistData.categories = saveData.categories;
+                    }
+                    renderCategories();
+                    updateProgress();
+                } catch (error) {
+                    console.log('Error loading from localStorage:', error);
+                }
+            }
+        }
+
+        // Delete an entire category
+        function deleteCategory(categoryIndex) {
+            const category = checklistData.categories[categoryIndex];
+            const confirmMessage = `Are you sure you want to delete the entire "${category.title}" category?\n\nThis will remove all ${category.items.length} items and cannot be undone.`;
+            
+            if (confirm(confirmMessage)) {
+                // Remove all checked items from this category
+                const itemsToRemove = [];
+                for (let i = 0; i < category.items.length; i++) {
+                    const itemId = `item-${categoryIndex}-${i}`;
+                    if (checkedItems.has(itemId)) {
+                        itemsToRemove.push(itemId);
+                    }
+                }
+                itemsToRemove.forEach(itemId => checkedItems.delete(itemId));
+                
+                // Remove the category
+                checklistData.categories.splice(categoryIndex, 1);
+                
+                // Update checked items IDs (shift them down for categories after the deleted one)
+                const newCheckedItems = new Set();
+                checkedItems.forEach(itemId => {
+                    const [, catIdx, itemIdx] = itemId.split('-');
+                    const catIndex = parseInt(catIdx);
+                    if (catIndex > categoryIndex) {
+                        // Shift category index down by 1
+                        newCheckedItems.add(`item-${catIndex - 1}-${itemIdx}`);
+                    } else if (catIndex < categoryIndex) {
+                        // Keep as is
+                        newCheckedItems.add(itemId);
+                    }
+                    // Items from deleted category are not added (effectively deleted)
+                });
+                checkedItems = newCheckedItems;
+                
+                renderCategories();
+                updateProgress();
+                saveToLocalStorage();
+                showSavedMessage(`Category "${category.title}" deleted! 🗑️`);
+            }
+        }
+
+        // Show add category modal
+        function showAddCategoryModal() {
+            document.getElementById('categoryNameInput').value = '';
+            document.getElementById('categoryEmojiInput').value = '';
+            document.getElementById('addCategoryModal').classList.add('show');
+        }
+
+        // Close add category modal
+        function closeAddCategoryModal() {
+            document.getElementById('addCategoryModal').classList.remove('show');
+        }
+
+        // Select an emoji for the category
+        function selectEmoji(emoji) {
+            document.getElementById('categoryEmojiInput').value = emoji;
+        }
+
+        // Create a new category
+        function createCategory() {
+            const name = document.getElementById('categoryNameInput').value.trim();
+            const emoji = document.getElementById('categoryEmojiInput').value.trim();
+            
+            if (!name) {
+                alert('Please enter a category name!');
+                return;
+            }
+            
+            if (!emoji) {
+                alert('Please choose an emoji for your category!');
+                return;
+            }
+
+            // Check if category name already exists
+            const existingCategory = checklistData.categories.find(cat => 
+                cat.title.toLowerCase() === name.toLowerCase()
+            );
+            
+            if (existingCategory) {
+                alert('A category with this name already exists! Please choose a different name.');
+                return;
+            }
+
+            // Create new category
+            const newCategory = {
+                title: name,
+                icon: emoji,
+                items: []
+            };
+
+            checklistData.categories.push(newCategory);
+            
+            closeAddCategoryModal();
+            renderCategories();
+            updateProgress();
+            saveToLocalStorage();
+            showSavedMessage(`Category "${name}" created! ✨`);
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            const saveModal = document.getElementById('saveModal');
+            const loadModal = document.getElementById('loadModal');
+            const addCategoryModal = document.getElementById('addCategoryModal');
+            
+            if (event.target === saveModal) {
+                closeSaveModal();
+            }
+            if (event.target === loadModal) {
+                closeLoadModal();
+            }
+            if (event.target === addCategoryModal) {
+                closeAddCategoryModal();
+            }
+        });
+
+        // Initialize the app when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Add some random lightning in rock mode
+        setInterval(() => {
+            if (isRockMode && Math.random() < 0.1) {
+                triggerLightning();
+            }
+        }, 2000);
     </script>
 </body>
 </html>
